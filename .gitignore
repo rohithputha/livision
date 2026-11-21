@@ -86,3 +86,6 @@ logs/
 benchmarks/results/
 *.prof
 *.trace
+
+__pycache__/
+*.pyc

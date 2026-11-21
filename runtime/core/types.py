@@ -4,7 +4,10 @@ from dataclasses import dataclass
 from enum import Enum
 
 import numpy as np
+from typing import Literal
 
+import torch
+from typing import Any
 
 class ColorSpace(str, Enum):
     RGB = "RGB"
@@ -29,6 +32,22 @@ class Frame:
     data: np.ndarray
 
     metadata: FrameMetadata
+
+
+    def __init__(self, data, metadata= None):
+        self.data = data
+
+        if metadata is None:
+            h, w, channels = data.shape
+            self.metadata = FrameMetadata(
+                        width=w,
+                        height=h,
+                        channels=channels,
+                        color_space= ColorSpace.RGB,
+                        source_id=None
+                    )
+        else:
+            self.metadata = metadata
 
 
     def __post_init__(self):
@@ -56,4 +75,42 @@ class Frame:
         if self.metadata.channels!= expected_channels[self.metadata.color_space]:
             raise ValueError("Invalid Channel Count")
 
-        
+
+    def to_tensor(self, layout: Literal["NCHW", "NHWC"] = "NCHW", normalize: bool = True)-> torch.Tensor:
+
+        if layout not in ("NCHW", "NHWC"):
+            raise ValueError(f"Unsupported layout: {layout}")
+
+        tensor = torch.from_numpy(self.data)
+
+        if self.metadata.color_space == ColorSpace.BGR:
+            tensor = tensor[...,[2, 1, 0]]
+
+        if normalize:
+            tensor = tensor.float()/255.0
+
+        if layout == "NCHW":
+            tensor = tensor.permute(2, 0, 1 )
+
+        tensor = tensor.unsqueeze(0)
+        return tensor
+
+    def get_frame(self):
+        return self.data
+    
+
+
+@dataclass(frozen = True)
+class InferenceRequest:
+    req_id: str
+    model_id: str
+    frame: Frame
+
+
+@dataclass
+class InferenceResult:
+    req_id: str
+    model_id: str
+    outputs: dict[str, Any]
+    latency_ms: float | None = None
+

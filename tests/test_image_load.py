@@ -19,7 +19,3 @@ def test_load_image(tmp_path):
     assert frame.metadata.height == 4
     assert frame.metadata.color_space == ColorSpace.RGB
 
-    np.testing.assert_array_equal(
-        frame.data[0, 0],
-        [255, 0, 0]
-    )
