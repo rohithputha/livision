@@ -1,0 +1,88 @@
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+build/
+dist/
+
+# =========================
+# Virtual environments
+# =========================
+.venv/
+venv/
+env/
+
+# =========================
+# Testing and coverage
+# =========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# =========================
+# IDE and editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+.AppleDouble
+
+# =========================
+# Environment variables / secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Model weights / checkpoints
+# =========================
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+checkpoints/
+weights/
+
+# =========================
+# Video and image datasets
+# =========================
+data/raw/
+data/processed/
+datasets/
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# =========================
+# Experiment outputs
+# =========================
+outputs/
+runs/
+artifacts/
+logs/
+*.log
+
+# =========================
+# Benchmark results (generated)
+# =========================
+benchmarks/results/
+*.prof
+*.trace
